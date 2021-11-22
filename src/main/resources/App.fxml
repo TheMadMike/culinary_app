@@ -14,7 +14,7 @@
          <children>
             <Label text="Product name:" />
             <TextField />
-            <Label text="Qantity:" />
+            <Label text="Quantity:" />
             <TextField />
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="22.0" prefWidth="95.0" text="Add" />
          </children>
