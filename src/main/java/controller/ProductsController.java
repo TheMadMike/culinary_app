@@ -1,8 +1,5 @@
 package controller;
 
-import data.DataContext;
-import data.DataRepository;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -11,11 +8,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import model.Product;
+import service.ProductsService;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class ProductsController implements Initializable {
 
@@ -28,7 +24,7 @@ public class ProductsController implements Initializable {
     private @FXML TableColumn<Product, String> nameColumn;
     private @FXML TableColumn<Product, Integer> quantityColumn;
 
-    private final DataRepository productsRepository = DataContext.getInstance().getProductsRepository();
+    ProductsService service = new ProductsService();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -44,29 +40,18 @@ public class ProductsController implements Initializable {
         String name = ((TextField)addMenu.getChildren().get(1)).getText();
         int quantity = Integer.parseInt(((TextField)addMenu.getChildren().get(3)).getText());
 
-        productsRepository.create(new Product(name, quantity));
+        service.add(new Product(name, quantity));
+
         updateTable();
-    }
-
-    private void updateTable() {
-        List<Product> productList = productsRepository.readAll().stream()
-                .map(serializable -> (Product) serializable)
-                .collect(Collectors.toList());
-
-        for(int i = 0; i < productList.size(); ++i) {
-            productList.get(i).setId(i);
-        }
-
-        tableView.setItems(FXCollections.observableArrayList(productList));
     }
 
     @FXML
     public void removeProduct() {
         int index = Integer.parseInt(((TextField)removeMenu.getChildren().get(1)).getText());
-        if(productsRepository.readAll().size() > index) {
-            productsRepository.delete(index);
-            updateTable();
-        }
+
+        service.delete(index);
+
+        updateTable();
     }
 
     @FXML
@@ -75,9 +60,12 @@ public class ProductsController implements Initializable {
         String name = ((TextField)updateMenu.getChildren().get(3)).getText();
         int quantity = Integer.parseInt(((TextField)updateMenu.getChildren().get(5)).getText());
 
-        if(productsRepository.readAll().size() > index) {
-            productsRepository.update(index, new Product(index, name, quantity));
-            updateTable();
-        }
+        service.update(index, new Product(name, quantity));
+
+        updateTable();
+    }
+
+    private void updateTable() {
+        tableView.setItems(service.getProductsObservableList());
     }
 }
