@@ -18,7 +18,6 @@ public class Main extends Application {
         Parent root = loadFXML();
         stage.setScene(new Scene(root));
         stage.setTitle(WINDOW_TITLE);
-        stage.setResizable(false);
         stage.show();
     }
 
