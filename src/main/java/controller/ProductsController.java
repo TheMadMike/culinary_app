@@ -6,6 +6,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import model.Product;
 import service.ProductsService;
@@ -67,5 +68,10 @@ public class ProductsController implements Initializable {
 
     private void updateTable() {
         tableView.setItems(service.getProductsObservableList());
+    }
+
+    @FXML
+    public void refresh() {
+        updateTable();
     }
 }
