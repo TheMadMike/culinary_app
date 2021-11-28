@@ -52,6 +52,8 @@
                         <Button mnemonicParsing="false" onMouseClicked="#removeProduct" text="Remove" />
                      </children>
                   </VBox>
+                  <Separator prefWidth="200.0" />
+                  <Button onMouseClicked="#refresh" mnemonicParsing="false" text="Refresh" />
                </children>
             </VBox>
         </items>
